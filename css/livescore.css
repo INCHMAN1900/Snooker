@@ -1,0 +1,66 @@
+/***
+ * 比分直播样式表
+ */
+.table {
+  display: flex;
+  padding: 5px 0;
+  border-top: 10px solid #ededed;
+  font-size: 12px;
+  background-color: white;
+}
+
+.player {
+  position: relative;
+  width: 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.headImage {
+  width: 67px;
+  height: 67px;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.common {
+  position: relative;
+  width: 140px;
+}
+
+.common > div{
+  padding: 3px 0;
+}
+
+.common-row{
+  display: flex;
+  justify-content: space-between;
+}
+
+.num {
+  color: #c00;
+  font-weight: bold;
+}
+
+.name {
+  padding: 10px 0;
+  box-sizing: border-box;
+}
+
+.left, .right, .center {
+  display: inline-block;
+  text-align: center;
+}
+
+.left, .right {
+  width: 25%;
+}
+
+.center {
+  width: 50%;
+}

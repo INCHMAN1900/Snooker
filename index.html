@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/main.css">
+  <title>Snooker</title>
+</head>
+<body>
+  <div id="wrap" class="wrap">
+    <nav class="nav-tab text-c">
+      <div
+        :class="'nav-tab-item ' + (activeTab === 0 ? 'nav-tab-focused' : '')"
+        @click="checkTab(0)"
+      >今日赛程</div>
+      <div
+        :class="'nav-tab-item ' + (activeTab === 1 ? 'nav-tab-focused' : '')"
+        @click="checkTab(1)"
+      >比分直播</div>
+    </nav>
+    <div class="livescore" v-if="activeTab === 1">
+      <div class="no-data">请使用“深度斯诺克Live”小程序</div>
+      <!-- <div class="no-data" v-if="!loading && !liveScore.length">暂时没有直播</div> -->
+      <div class="live-content">
+        <div class="table text-c" v-for="item in liveScore">
+          <div class="palyer1 player">
+            <img :src="item.player1.headImgUrl" class="headImage" />
+            <div class="name ellipse">{{item.player1.name}}</div>
+          </div>
+          <div class="common">
+            <div class="bestOf">BO
+              <span class="num">{{item.common.bestOf}}</span>
+            </div>
+            <div class="common-row">
+              <span class="left num">{{item.player1.totalSetScore}}</span>
+              <span class="center">局分</span>
+              <span class="right num">{{item.player2.totalSetScore}}</span>
+            </div>
+            <div class="common-row">
+              <span class="left num">{{item.player1.thisSetScore}}</span>
+              <span class="center">本局比分</span>
+              <span class="right num">{{item.player2.thisSetScore}}</span>
+            </div>
+            <div class="common-row">
+              <span class="left num">{{item.player1.breakScore}}</span>
+              <span class="center">单杆得分</span>
+              <span class="right num">{{item.player2.breakScore}}</span>
+            </div>
+            <div class="leftScore">台面剩余</div>
+            <div>
+              <span class="num">{{item.common.leftScore}}</span>
+            </div>
+          </div>
+          <div class="player2 player">
+            <img :src="item.player2.headImgUrl" class="headImage" />
+            <div class="name ellipse">{{item.player2.name}}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="today" v-if="activeTab === 0">
+      <div class="no-data" v-if="!loading && !todayMatch.length">今天没有比赛</div>
+      <div class="today-content">
+        <!-- 星期五API -->
+        <div v-for="session in todayMatch" class="session session-fri">
+          <div v-for="against in session.datalist">
+            <div class="against-detail">
+              <div class="session-date text-l">{{session.datainfo}}</div>
+              <div class="session-time text-r">{{against.matchdateshort}}</div>
+            </div>
+            <div class="against">
+              <div class="against-p1name text-l">{{against.player1}}</div>
+              <div class="against-p1set">{{against.player1fen}}</div>
+              <div class="against-vs">VS</div>
+              <div class="against-p2set">{{against.player2fen}}</div>
+              <div class="against-p2name text-r">{{against.player2}}</div>
+            </div>
+          </div>
+        </div>
+        <!-- 小程序API -->
+        <!-- <div v-for="session in todayMatch" class="session">
+          <div class="session-detail">
+            <div class="session-index">序号</div>
+            <div class="session-time text-r">{{session.time}}</div>
+            <div class="session-round text-l">{{session.round}}</div>
+          </div>
+          <div v-for="against in session.againstList" class="against">
+            <div class="against-no">{{against.no}}</div>
+            <div class="against-p1name text-l">{{against.p1name}}</div>
+            <div class="against-p1set">{{against.p1set}}</div>
+            <div class="against-vs">VS</div>
+            <div class="against-p2set">{{against.p2set}}</div>
+            <div class="against-p2name text-r">{{against.p2name}}</div>
+          </div>
+        </div> -->
+      </div>
+    </div>
+    <footer class="text-c" @click="quit">
+      退出
+    </footer>
+  </div>
+  <script src="js/request.js"></script>
+  <script src="js/vue.js"></script>
+  <script src="js/url.js"></script>
+  <script>
+    new Vue({
+      data() {
+        return {
+          liveScore: [],
+          todayMatch: [],
+          loading: true,
+          activeTab: 0
+        }
+      },
+      created: function () {
+        this.getTodayMatch();
+        window.addEventListener('keydown', (e) => {
+          var keycode = e.keyCode;
+          if (keycode === 37 && this.activeTab === 1) {
+            this.checkTab(0)
+          }
+          if (keycode === 39 && this.activeTab === 0) {
+            this.checkTab(1)
+          }
+        })
+      },
+      methods: {
+        checkTab(index) {
+          this.activeTab = parseInt(index);
+          if (index === 0) {
+            // this.getLiveScore();
+          }
+          if (index === 1) {
+            this.getTodayMatch();
+          }
+        },
+        getLiveScore() {
+          this.loading = true;
+          request(LIVESCORE_URL).then(result => {
+            this.loading = false;
+            var { code, msg, data } = JSON.parse(result);
+            if (code === 0 && msg === 'ok') {
+              if (data.length !== 0) {
+                data[1].player2.name += '1234'
+                this.liveScore = data;
+              }
+            }
+          }, err => {
+            this.loading = false;
+          })
+        },
+        getTodayMatch() {
+          this.loading = true
+          request(TODAY_URL).then(result => {
+            this.loading = false;
+            /***
+             * 星期五API返回数据处理过程
+             */
+            var { returnvalue, msg, list } = JSON.parse(result);
+            if (returnvalue === "true" && msg === "成功") {
+              if (list.length !== 0) {
+                this.todayMatch = list;
+              }
+            }
+            /***
+             * 小程序API返回数据处理过程
+             */
+            /* var { code, msg, data } = JSON.parse(result);
+            if (code === 0 && msg === "ok") {
+              if (data.length !== 0) {
+                this.todayMatch = data;
+              }
+            } */
+          }, err => {
+            this.loading = false;
+          })
+        },
+        quit() {
+          var app = require('electron').remote.app;
+          app.quit();
+        }
+      }
+    }).$mount('#wrap')
+  </script>
+</body>
+</html>

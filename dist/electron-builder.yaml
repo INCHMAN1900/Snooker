@@ -1,0 +1,6 @@
+directories:
+  output: dist
+  buildResources: build
+mac:
+  icon: build/Icon.icns
+electronVersion: 1.7.10

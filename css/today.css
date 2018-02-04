@@ -1,0 +1,96 @@
+.session {
+  text-align: center;
+  font-size: 12px;
+}
+
+.session-detail {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  padding: 5px 0;
+  font-size: 13px;
+  font-weight: bold;
+  background-color: #f0f0f2;
+  color: #c00;
+}
+
+.session-index {
+  flex: 2;
+}
+
+.session-round {
+  flex: 7;
+}
+
+.session-time{
+  flex: 6;
+  margin-right: 10px;
+}
+
+.session-detail, .against-detail{
+  padding: 4px 6px;
+  box-sizing: border-box;
+}
+
+.session-time{
+  margin-right: 0;
+}
+
+.against-detail{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  font-weight: bold;
+  background-color: #f0f0f2;
+  color: #c00;
+}
+
+.against {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  padding: 4px 0;
+  color: black;
+  background-color: white;
+}
+
+.against:not(:last-of-type) {
+  border-bottom: 1px solid darkgrey;
+}
+
+.against-p1set, .against-p2set {
+  flex: 1;
+}
+
+.against-no, .against-vs {
+  flex: 2
+}
+
+.against-p1name, .against-p2name {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.against-p1name{
+  flex: 4;
+}
+
+.against-p2name {
+  flex: 5;
+  padding-right: 5px;
+}
+
+.session-fri .against-p1name{
+  flex: 5;
+}
+
+.session-fri .against{
+  padding: 4px 6px;
+}
+
+.session-fri .against-p2name{
+  padding-right: 0;
+}

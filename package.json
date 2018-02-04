@@ -1,0 +1,24 @@
+{
+  "name": "Snooker",
+  "version": "1.0.1",
+  "description": "an app for mac, used to watch snooker.",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "package": "electron-builder -l"
+  },
+  "build": {
+    "mac": {
+      "icon": "build/Icon.icns"
+    },
+    "linux": {
+      "icon": "build/Icon.icns"
+    }
+  },
+  "author": "INCHMAN",
+  "license": "ISC",
+  "devDependencies": {
+    "electron-builder": "^19.52.1",
+    "electron-packager": "^10.1.1"
+  }
+}

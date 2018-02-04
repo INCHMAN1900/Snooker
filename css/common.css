@@ -1,0 +1,12 @@
+/***
+ * 公共样式表
+ */
+.text-l{
+  text-align: left;
+}
+.text-c{
+  text-align: center;
+}
+.text-r{
+  text-align: right;
+}
