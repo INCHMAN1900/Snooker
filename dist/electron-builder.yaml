@@ -3,4 +3,6 @@ directories:
   buildResources: build
 mac:
   icon: build/Icon.icns
-electronVersion: 1.7.10
+linux:
+  icon: build/Icon.icns
+electronVersion: 1.6.17
